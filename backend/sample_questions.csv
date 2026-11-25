@@ -1,0 +1,13 @@
+questionText,optionA,optionB,optionC,optionD,correctOption
+Which data structure follows LIFO?,Stack,Queue,Tree,Graph,A
+What is the time complexity of binary search?,O(n),O(n^2),O(log n),O(1),C
+Which data structure is commonly used in BFS?,Stack,Queue,Heap,Hash table,B
+Which data structure is commonly used in iterative DFS?,Stack,Queue,Array only,Heap,A
+Which sorting algorithm uses partitioning?,Bubble Sort,Insertion Sort,Quick Sort,Selection Sort,C
+What is the index of the first element in a C++ array?,1,-1,0,2,C
+Which traversal of a BST gives sorted values?,Preorder,Postorder,Level order,Inorder,D
+Which data structure stores key-value pairs using hashing?,Stack,Hash table,Queue,Linked list,B
+What is the worst case time complexity of linear search?,O(1),O(log n),O(n),O(n^2),C
+Which data structure supports insertion and deletion at both ends?,Stack,Deque,Priority queue,Binary tree,B
+Which algorithm finds shortest paths in an unweighted graph?,DFS,BFS,Merge Sort,Binary Search,B
+Which sorting algorithm repeatedly merges sorted subarrays?,Quick Sort,Bubble Sort,Merge Sort,Selection Sort,C
