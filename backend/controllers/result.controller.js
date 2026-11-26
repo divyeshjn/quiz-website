@@ -16,9 +16,7 @@ import {
   finalizeAttempt,
 } from "../services/submission.service.js";
 
-import {
-  generateCSV,
-} from "../utils/csv.js";
+import { generateExcel } from "../utils/excel.js";
 
 const createError = (
   message,
@@ -238,7 +236,7 @@ export const getIndividualResult = async (
   }
 };
 
-// Export all results as CSV
+// Export all results as Excel
 export const exportResults = async (
   req,
   res,
@@ -251,67 +249,30 @@ export const exportResults = async (
       quiz._id
     );
 
-    const headers = [
-      "Student Name",
-      "Roll Number",
-      "Email",
-      "Score",
-      "Total Marks",
-      "Percentage",
-      "Correct Answers",
-      "Incorrect Answers",
-      "Unanswered",
-      "Status",
-      "Started At (UTC)",
-      "Submitted At (UTC)",
-      "Time Taken (Seconds)",
-    ];
-
     const rows = attempts.map((attempt) => {
-      const student = formatStudentResult(
-        attempt
-      );
+      const student = formatStudentResult(attempt);
 
-      return [
-        student.studentName,
-        student.rollNumber,
-        student.email,
-        student.score,
-        student.totalMarks,
-        student.percentage,
-        student.correctAnswers,
-        student.incorrectAnswers,
-        student.unanswered,
-        student.status,
-
-        student.startedAt
-          ? new Date(
-              student.startedAt
-            ).toISOString()
-          : "",
-
-        student.submittedAt
-          ? new Date(
-              student.submittedAt
-            ).toISOString()
-          : "",
-
-        student.timeTakenSeconds,
-      ];
+      return {
+        rollNumber: String(student.rollNumber ?? ""),
+        name: student.studentName,
+        totalMarks:
+          student.status === "in-progress"
+            ? null
+            : student.score,
+      };
     });
 
-    const csv = generateCSV(headers, rows);
+    const excel = await generateExcel(rows);
 
     const safeTitle = quiz.title
       .replace(/[^a-zA-Z0-9_-]/g, "_")
       .slice(0, 100);
 
-    const filename =
-      `${safeTitle}_results.csv`;
+    const filename = `${safeTitle}_results.xlsx`;
 
     res.setHeader(
       "Content-Type",
-      "text/csv; charset=utf-8"
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
 
     res.setHeader(
@@ -324,7 +285,7 @@ export const exportResults = async (
       "no-store"
     );
 
-    return res.status(200).send(csv);
+    return res.status(200).send(excel);
   } catch (error) {
     next(error);
   }

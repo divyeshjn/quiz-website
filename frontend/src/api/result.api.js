@@ -45,15 +45,24 @@ export const downloadResults = async (quizId) => {
 
   const blob = new Blob(
     [response.data],
-    { type: "text/csv;charset=utf-8" }
+    {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    }
   );
 
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement("a");
 
+  const disposition =
+    response.headers["content-disposition"];
+
+  const filename =
+    disposition?.match(/filename="([^"]+)"/)?.[1] ||
+    `quiz_${quizId}_results.xlsx`;
+
   link.href = url;
-  link.download = `quiz_${quizId}_results.csv`;
+  link.download = filename;
 
   document.body.appendChild(link);
 

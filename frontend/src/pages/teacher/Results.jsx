@@ -291,7 +291,7 @@ export default function Results() {
             onClick={handleExport}
           >
             <Download size={17} />
-            Export CSV
+            Export Excel
           </Button>
         </div>
       </div>
